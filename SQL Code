@@ -1,0 +1,28 @@
+--Orders shipped by Speedy Express--
+SELECT COUNT (*) AS OrdersShipped
+FROM Shippers
+JOIN Orders 
+	on Orders.ShipperID = Shippers.ShipperID
+    WHERE Shippers.ShipperName = 'Speedy Express';
+
+-- Last name of employee with the most orders --
+SELECT Employees.LastName, COUNT (*) EmployeeHighestOrders
+FROM Employees 
+JOIN Orders 
+	ON Employees.EmployeeID = Orders.EmployeeId
+    GROUP BY Employees.LastName
+    ORDER BY EmployeeHighestOrders DESC
+    LIMIT 1;
+
+-- Product Ordered Most by Customers in Germany --
+SELECT Products.ProductName, SUM(OrderDetails.Quantity) AS "TotalQuantity"
+FROM Customers
+JOIN Orders
+	ON Customers.CustomerID = Orders.CustomerID
+JOIN OrderDetails
+	ON Orders.OrderID = OrderDetails.OrderID 
+JOIN Products
+	ON Products.ProductID = OrderDetails.ProductID
+WHERE Customers.Country = 'Germany'
+GROUP BY OrderDetails.ProductID 
+ORDER BY TotalQuantity DESC;
